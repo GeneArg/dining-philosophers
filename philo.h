@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 02:06:37 by eagranat          #+#    #+#             */
-/*   Updated: 2024/10/05 16:25:57 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/10/05 17:40:09 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,8 @@ typedef struct s_table
 
 /*UTILS*/
 void print_error(char *str);
+
+/*PARSING*/
+void	parse_input(t_table *table, char *argv[]);
 
 #endif
