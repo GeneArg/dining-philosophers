@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:03:59 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/08 13:16:36 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/08 14:15:44 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 		parse_input(&table, argv);
 
 		// 2. init the table
-		init_table(&table);
+		data_init(&table);
 
 		// 3. start dinner
 		dinner_start(&table);
