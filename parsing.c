@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:18:34 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/08 12:35:35 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/08 13:16:30 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static long ft_atol(const char *str)
 
 void	parse_input(t_table *table, char *argv[])
 {
-	table->philo_count = ft_atol(argv[1]);
+	table->philo_nbr = ft_atol(argv[1]);
 	table->time_to_die = ft_atol(argv[2]) * 1000;
 	table->time_to_eat = ft_atol(argv[3]) * 1000;
 	table->time_to_sleep = ft_atol(argv[4]) * 1000;
@@ -86,6 +86,6 @@ void	parse_input(t_table *table, char *argv[])
 	}
 	else
 		table->limit_meals = -1;
-	if (table->philo_count < 2)
+	if (table->philo_nbr < 2)
 		print_error("The number of philosophers is less than 2.\n");
 }
