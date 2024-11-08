@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 02:06:37 by eagranat          #+#    #+#             */
-/*   Updated: 2024/10/05 17:40:09 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:35:31 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
-#include <limits.h>
+# include <limits.h>
 # include <sys/time.h>
+# include <errno.h>
 
 # define RST "/033[0m" // reset to default color
 # define RED "/033[1;31m" // bold red
@@ -32,10 +33,24 @@
 
 typedef struct s_table t_table;
 
+typedef pthread_mutex_t t_mtx;
+
+/*For Mutex*/
+typedef enum e_opcode
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH
+}	t_opcode;
+
 /*FORK*/
 typedef struct s_fork
 {
-	pthread_mutex_t	fork;
+	t_mtx	fork;
 	int fork_id;
 }	t_fork;
 
@@ -70,6 +85,11 @@ typedef struct s_table
 
 /*UTILS*/
 void print_error(char *str);
+
+/*SAFETY*/
+void *protect_malloc(size_t size);
+void safe_mutex(t_mtx *mtx, t_opcode opcode);
+void safe_thread(pthread_t *thread, void (*foo)(void *), void *data, t_opcode opcode);
 
 /*PARSING*/
 void	parse_input(t_table *table, char *argv[]);
