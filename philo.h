@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 02:06:37 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/08 13:16:40 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 10:57:22 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,15 @@ typedef struct s_table
 	long long limit_meals; // number of meals before the end of the simulation | flag if -1
 	long long start_time; // time when the simulation starts
 	bool end; // flag to end the simulation - philo dies or all philos are full
+	bool all_threads_ready; // flag to start the simulation
+	t_mtx table_mutex; // avoid race condition
 	t_fork *forks; //array of forks
 	t_philo *philos; //array of philos
 }	t_table;
 
 /*UTILS*/
 void print_error(char *str);
+void	wait_all_threads(t_table *table);
 
 /*INIT*/
 void	data_init(t_table *table);
@@ -96,5 +99,12 @@ void safe_thread(pthread_t *thread, void (*foo)(void *), void *data, t_opcode op
 
 /*PARSING*/
 void	parse_input(t_table *table, char *argv[]);
+
+/*GETTERS_SETTERS*/
+void	set_bool(t_mtx *mtx, bool *var, bool value);
+bool	get_bool(t_mtx *mtx, bool *var);
+long get_long(t_mtx *mtx, long *var);
+void set_long(t_mtx *mtx, long *var, long value);
+bool	simulation_end(t_table *table);
 
 #endif

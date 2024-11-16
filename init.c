@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 07:24:39 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/08 13:16:33 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 11:23:44 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ void	data_init(t_table *table)
 
 	i = 0;
 	table->end = false;
+	table->all_threads_ready = false;
 	table->philos = protect_malloc(sizeof(t_philo) * table->philo_nbr);
+	safe_mutex(&table->table_mutex, INIT);
 	table->forks = protect_malloc(sizeof(t_fork) * table->philo_nbr);
 	while (i < table->philo_nbr)
 	{
