@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:31:36 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/08 13:16:42 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 20:48:25 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,23 @@ void *protect_malloc(size_t size)
 
 void safe_mutex(t_mtx *mtx, t_opcode opcode)
 {
+	int status;
+
+	status = 0;
 	if (opcode == LOCK)
-		pthread_mutex_lock(mtx);
+		status = pthread_mutex_lock(mtx);
 	else if (opcode == UNLOCK)
-		pthread_mutex_unlock(mtx);
+		status = pthread_mutex_unlock(mtx);
 	else if (opcode == INIT)
-		pthread_mutex_init(mtx, NULL);
+		status = pthread_mutex_init(mtx, NULL);
 	else if (opcode == DESTROY)
-		pthread_mutex_destroy(mtx);
+		status = pthread_mutex_destroy(mtx);
 	else
 		print_error("Invalid mutex opcode.\n");
+	if (status != 0)
+	{
+		printf("Mutex operation failed: opcode=%d, status=%d\n", opcode, status);
+	}
 }
 
 static void handle_mutex_error(int status, t_opcode opcode)

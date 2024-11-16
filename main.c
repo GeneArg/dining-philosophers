@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:03:59 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/08 14:15:44 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 20:51:00 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,21 @@ int main(int argc, char *argv[])
 		// 1. errors checking, filling the table
 		parse_input(&table, argv);
 
+		printf("Finished parsing inputs\n");
+
 		// 2. init the table
 		data_init(&table);
+
+		printf("Parsed input and initialized data...\n");
+
 
 		// 3. start dinner
 		dinner_start(&table);
 
-		// 4. clean up - 1 philo is dead or all are full
-		clean_table(&table);
+		printf("Simulation started\n");
 
+		// 4. clean up - 1 philo is dead or all are full
+		clean(&table);
 	}
 	else
 	{
