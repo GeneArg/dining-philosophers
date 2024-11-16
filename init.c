@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 07:24:39 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/16 20:50:56 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:27:17 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,16 @@ static void philo_init(t_table *table)
 {
 	int i;
 	t_philo *philo;
-
-	printf("Starting philosopher initialization...\n");
 	i = 0;
 	while (i < table->philo_nbr)
 	{
-		printf("Initializing philosopher %d...\n", i);
 		philo = table->philos + i;
 		philo->id = i + 1;
 		philo->full = false;
+		philo->dead = false;
 		philo->meals_count = 0;
 		philo->table = table;
-		printf("Setting up mutex for philosopher %d...\n", i);
 		safe_mutex(&philo->philo_mutex, INIT);
-		printf("Mutex initialized for philosopher %d.\n", i);
-
-
 		assign_forks(philo, table->forks, i);
 		i++;
 	}
@@ -57,7 +51,6 @@ static void philo_init(t_table *table)
 
 void	data_init(t_table *table)
 {
-	printf("Starting data initialization...\n");
 	int i;
 
 	i = 0;
@@ -67,21 +60,12 @@ void	data_init(t_table *table)
 	table->philos = protect_malloc(sizeof(t_philo) * table->philo_nbr);
 	safe_mutex(&table->table_mutex, INIT);
 	safe_mutex(&table->write_mutex, INIT);
-
-	printf("Allocated philosophers.\n");
-
 	table->forks = protect_malloc(sizeof(t_fork) * table->philo_nbr);
-
-	printf("Allocated forks.\n");
-
 	while (i < table->philo_nbr)
 	{
-		printf("Initializing fork %d...\n", i);
-
 		safe_mutex(&table->forks[i].fork, INIT);
 		table->forks[i].fork_id = i;
 		i++;
 	}
 	philo_init(table);
-	printf("Philosophers initialized.\n");
 }

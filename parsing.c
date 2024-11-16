@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:18:34 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/08 13:16:30 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:50:05 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,6 @@ void	parse_input(t_table *table, char *argv[])
 	}
 	else
 		table->limit_meals = -1;
-	if (table->philo_nbr < 2)
-		print_error("The number of philosophers is less than 2.\n");
+	if (table->philo_nbr < 1)
+		print_error("The number of philosophers is less than 1.\n");
 }

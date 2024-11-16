@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 02:06:37 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/16 20:51:01 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:26:29 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_philo
 	int id;
 	long meals_count;
 	bool full;
+	bool dead;
 	long last_meal_time; // time passed from the last meal
 	t_fork *first_fork;
 	t_fork *second_fork;
@@ -101,6 +102,7 @@ typedef struct s_table
 	long limit_meals; // number of meals before the end of the simulation | flag if -1
 	long start_time; // time when the simulation starts
 	long threads_running_number; // number of threads running
+	long full_philos_count; // number of philos that are full
 	bool end; // flag to end the simulation - philo dies or all philos are full
 	bool all_threads_ready; // flag to start the simulation
 	pthread_t monitor; // monitor is a thread

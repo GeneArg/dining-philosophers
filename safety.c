@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:31:36 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/16 20:48:25 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 21:15:51 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,6 @@ void *protect_malloc(size_t size)
 	if (!ptr)
 		print_error("Malloc failed.\n");
 	return (ptr);
-}
-
-void safe_mutex(t_mtx *mtx, t_opcode opcode)
-{
-	int status;
-
-	status = 0;
-	if (opcode == LOCK)
-		status = pthread_mutex_lock(mtx);
-	else if (opcode == UNLOCK)
-		status = pthread_mutex_unlock(mtx);
-	else if (opcode == INIT)
-		status = pthread_mutex_init(mtx, NULL);
-	else if (opcode == DESTROY)
-		status = pthread_mutex_destroy(mtx);
-	else
-		print_error("Invalid mutex opcode.\n");
-	if (status != 0)
-	{
-		printf("Mutex operation failed: opcode=%d, status=%d\n", opcode, status);
-	}
 }
 
 static void handle_mutex_error(int status, t_opcode opcode)
@@ -85,6 +64,20 @@ static void handle_thread_error(int status, t_opcode opcode)
 		print_error("A deadlock was detected or the value of thread specifies the calling thread.\n");
 	else
 		print_error("Unknown thread error.\n");
+}
+
+void safe_mutex(t_mtx *mtx, t_opcode opcode)
+{
+	if (opcode == LOCK)
+		handle_mutex_error(pthread_mutex_lock(mtx), opcode);
+	else if (opcode == UNLOCK)
+		handle_mutex_error(pthread_mutex_unlock(mtx), opcode);
+	else if (opcode == INIT)
+		handle_mutex_error(pthread_mutex_init(mtx, NULL), opcode);
+	else if (opcode == DESTROY)
+		handle_mutex_error(pthread_mutex_destroy(mtx), opcode);
+	else
+		print_error("Invalid mutex opcode.\n");
 }
 
 void safe_thread(pthread_t *thread, void (*foo)(void *), void *data, t_opcode opcode)

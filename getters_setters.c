@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 10:31:03 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/16 20:50:54 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:47:27 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ void set_long(t_mtx *mtx, long *var, long value)
 	safe_mutex(mtx, UNLOCK);
 }
 
-bool	simulation_end(t_table *table)
+bool simulation_end(t_table *table)
 {
-	return (get_bool(&table->table_mutex, &table->end));
+	bool end_status = get_bool(&table->table_mutex, &table->end);
+	return end_status;
 }
+
