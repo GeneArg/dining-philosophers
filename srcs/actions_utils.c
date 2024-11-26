@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:31:36 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 11:01:41 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:32:30 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	eating(t_table *table, t_philo *current_philo)
 
 void	sleeping(t_table *table, t_philo *current_philo)
 {
-	long long current_time;
-	long long dinner_start;
-	int index;
+	long long	current_time;
+	long long	dinner_start;
+	int			index;
 
 	if (table->dinner_end)
 		return ;
@@ -63,9 +63,9 @@ void	sleeping(t_table *table, t_philo *current_philo)
 
 void	thinking(t_table *table, t_philo *current_philo)
 {
-	long long current_time;
-	long long dinner_start;
-	int index;
+	long long	current_time;
+	long long	dinner_start;
+	int			index;
 
 	pthread_mutex_lock(&table->is_thinking);
 	if (table->dinner_end)
@@ -84,9 +84,10 @@ void	thinking(t_table *table, t_philo *current_philo)
 	current_philo->is_eating = true;
 }
 
-void	check_death_utils(t_table *table, t_philo *current_philo, long long current_time)
+void	check_death_utils(t_table *table, t_philo *current_philo,
+		long long current_time)
 {
-	int index;
+	int	index;
 
 	pthread_mutex_lock(&table->is_thinking);
 	if (table->dinner_end)
@@ -96,7 +97,7 @@ void	check_death_utils(t_table *table, t_philo *current_philo, long long current
 	}
 	index = current_philo->index;
 	current_philo->is_dead = true;
-	printf(RED"%llu %d died\n"RST, current_time - table->dinner_start, index);
+	printf(RED "%llu %d died\n" RST, current_time - table->dinner_start, index);
 	table->dinner_end = true;
 	pthread_mutex_unlock(&table->is_thinking);
 }
@@ -113,4 +114,3 @@ void	check_meals_utils(t_table *table)
 	table->dinner_end = true;
 	pthread_mutex_unlock(&table->is_thinking);
 }
-

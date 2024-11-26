@@ -6,13 +6,13 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 10:44:15 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 10:47:53 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:32:42 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	int	nbr;
 	int	sign;
@@ -21,8 +21,8 @@ int ft_atoi(const char *str)
 	i = 0;
 	nbr = 0;
 	sign = 1;
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
-		|| str[i] == '\v' || str[i] == '\f' || str[i] == '\r')
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
@@ -38,9 +38,9 @@ int ft_atoi(const char *str)
 	return (nbr * sign);
 }
 
-int is_digit_str(char *str)
+int	is_digit_str(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str[i])
@@ -69,13 +69,13 @@ long	ft_atol(const char *str)
 {
 	long	nbr;
 	int		sign;
-	int 	i;
+	int		i;
 
 	i = 0;
 	nbr = 0;
 	sign = 1;
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
-		|| str[i] == '\v' || str[i] == '\f' || str[i] == '\r')
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
@@ -91,16 +91,16 @@ long	ft_atol(const char *str)
 	return (nbr * sign);
 }
 
-int max_thread(char *str)
+int	max_thread(char *str)
 {
 	if (ft_atoi(str) >= 126269)
 		return (0);
 	return (1);
 }
 
-int is_positive_str(char *str)
+int	is_positive_str(char *str)
 {
-	long nbr;
+	long	nbr;
 
 	nbr = ft_atol(str);
 	if (nbr <= 0 || nbr > INT_MAX)

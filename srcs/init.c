@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 07:24:39 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 11:06:25 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:32:36 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	init_philo(t_philo *philo, char **argv, int index)
 	philo->current_meal = 0;
 	if (!init_mutex(philo))
 	{
-		printf(RED"Error: Mutex init failed\n"RST);
+		printf(RED "Error: Mutex init failed\n" RST);
 		return (0);
 	}
 	return (1);
@@ -42,8 +42,8 @@ int	init_philo(t_philo *philo, char **argv, int index)
 
 int	create_philo_list(t_philo **philo, char **argv)
 {
-	int i;
-	t_philo *new_philo;
+	int		i;
+	t_philo	*new_philo;
 
 	i = 0;
 	while (i < ft_atoi(argv[1]))

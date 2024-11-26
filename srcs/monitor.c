@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:55:41 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 10:57:01 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:32:39 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	check_meals(t_table *table)
 {
-	int	philos_eaten;
-	t_philo *current_philo;
+	int		philos_eaten;
+	t_philo	*current_philo;
 
 	philos_eaten = 0;
 	current_philo = table->philo;
@@ -40,19 +40,20 @@ void	check_meals(t_table *table)
 	return ;
 }
 
-void check_death(t_table *table)
+void	check_death(t_table *table)
 {
-	t_philo *current_philo;
-	long long current_time;
-	long long time_to_die;
+	t_philo		*current_philo;
+	long long	current_time;
+	long long	time_to_die;
 
 	current_philo = table->philo;
 	time_to_die = table->philo->time_to_die;
-	while(1)
+	while (1)
 	{
 		current_time = get_time();
 		pthread_mutex_lock(&table->death);
-		if (current_philo->last_meal && (current_time - current_philo->last_meal) >= time_to_die)
+		if (current_philo->last_meal && (current_time
+				- current_philo->last_meal) >= time_to_die)
 		{
 			check_death_utils(table, current_philo, current_time);
 			pthread_mutex_unlock(&table->death);

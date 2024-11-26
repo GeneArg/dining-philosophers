@@ -22,3 +22,6 @@ logs
 .vscode
 *.swp
 Cache
+
+# Testers
+LazyPhilosophersTester
