@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 12:04:53 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 22:32:32 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/27 02:39:39 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 void	philo_actions(t_table *table, t_philo *current_philo)
 {

@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:06:59 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 22:32:40 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/27 02:24:54 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 long long	get_time(void)
 {

@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:55:41 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 22:32:39 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/27 02:37:09 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 void	check_meals(t_table *table)
 {
@@ -21,7 +21,7 @@ void	check_meals(t_table *table)
 	current_philo = table->philo;
 	while (1)
 	{
-		pthread_mutex_unlock(&table->meal_count_lock);
+		pthread_mutex_lock(&table->meal_count_lock);
 		if (current_philo->current_meal == table->nbr_of_meals)
 		{
 			philos_eaten++;

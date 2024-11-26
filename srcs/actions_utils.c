@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:31:36 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 22:32:30 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/27 02:24:18 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 void	eating(t_table *table, t_philo *current_philo)
 {
