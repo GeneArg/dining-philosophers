@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:55:41 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 02:37:09 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/27 09:56:37 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	check_death(t_table *table)
 	long long	time_to_die;
 
 	current_philo = table->philo;
-	time_to_die = table->philo->time_to_die;
+	time_to_die = current_philo->time_to_die;
 	while (1)
 	{
 		current_time = get_time();
@@ -89,6 +89,7 @@ void	*monitor_routine(void *arg)
 	table = (t_table *)arg;
 	(void)table;
 	pthread_mutex_lock(&table->is_thinking);
+	usleep(60);
 	pthread_mutex_unlock(&table->is_thinking);
 	if (table->nbr_of_philo != 1)
 		monitor_action(table);

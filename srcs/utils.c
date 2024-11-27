@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:06:59 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 02:24:54 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:36:33 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	ft_check_args_utils(char **argv)
 		if (!is_positive_str(argv[i]))
 		{
 			printf(RED "Error: Argument %d is not a positive \
-			number or over INT_MAX\n" RST, i);
+number or over INT_MAX\n" RST, i);
 			return (0);
 		}
 		i++;
