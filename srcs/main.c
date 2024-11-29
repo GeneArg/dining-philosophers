@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:03:59 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 02:24:46 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:01:55 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int argc, char **argv)
 		return (0);
 	if (!init_table(&table, argv))
 		return (0);
-	thread = malloc(sizeof(pthread_t) * ft_atoi(argv[1]) + 1);
+	thread = malloc(sizeof(pthread_t) * (ft_atoi(argv[1]) + 1));
 	if (!thread)
 	{
 		printf(RED "Error: Thread malloc failed\n" RST);
