@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:31:36 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 02:24:18 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:02:34 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	check_meals_utils(t_table *table)
 	if (table->dinner_end)
 	{
 		pthread_mutex_unlock(&table->is_thinking);
-		pthread_mutex_lock(&table->death);
 		return ;
 	}
 	table->dinner_end = true;

@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:55:41 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 09:56:37 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:40:22 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	check_meals(t_table *table)
 		if (current_philo == table->philo)
 			break ;
 	}
-	return ;
+	// pthread_mutex_unlock(&table->meal_count_lock);
 }
 
 void	check_death(t_table *table)
@@ -47,11 +47,11 @@ void	check_death(t_table *table)
 	long long	time_to_die;
 
 	current_philo = table->philo;
-	time_to_die = current_philo->time_to_die;
 	while (1)
 	{
 		current_time = get_time();
 		pthread_mutex_lock(&table->death);
+		time_to_die = current_philo->time_to_die;
 		if (current_philo->last_meal && (current_time
 				- current_philo->last_meal) >= time_to_die)
 		{
@@ -64,7 +64,7 @@ void	check_death(t_table *table)
 		if (current_philo == table->philo)
 			break ;
 	}
-	return ;
+	// pthread_mutex_unlock(&table->death);
 }
 
 void	monitor_action(t_table *table)
@@ -73,13 +73,25 @@ void	monitor_action(t_table *table)
 	{
 		if (table->nbr_of_meals != -1)
 			check_meals(table);
+		pthread_mutex_lock(&table->death);
 		if (table->dinner_end)
+		{
+			pthread_mutex_unlock(&table->death);
 			break ;
+		}
+		pthread_mutex_unlock(&table->death);
 		check_death(table);
+		pthread_mutex_lock(&table->death);
 		if (table->dinner_end)
+		{
+			pthread_mutex_unlock(&table->death);
 			break ;
+		}
+		pthread_mutex_unlock(&table->death);
 	}
-	return ;
+	// pthread_mutex_unlock(&table->meal_count_lock);
+	// pthread_mutex_unlock(&table->is_thinking);
+	// return ;
 }
 
 void	*monitor_routine(void *arg)

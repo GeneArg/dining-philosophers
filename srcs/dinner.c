@@ -6,7 +6,7 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 12:04:53 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 02:39:39 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:37:59 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ void	philo_actions(t_table *table, t_philo *current_philo)
 		return ;
 	while (1)
 	{
+		pthread_mutex_lock(&table->death);
 		if (table->dinner_end)
+		{
+			pthread_mutex_unlock(&table->death);
 			break ;
+		}
 		pthread_mutex_unlock(&table->death);
 		if (current_philo->is_eating)
 			eating(table, current_philo);
