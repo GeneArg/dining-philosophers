@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:31:36 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/29 15:02:34 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:34:58 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 void	eating(t_table *table, t_philo *current_philo)
 {
@@ -20,21 +20,21 @@ void	eating(t_table *table, t_philo *current_philo)
 	pthread_mutex_lock(&current_philo->next->right_fork);
 	if (!check_first_meal(table, current_philo))
 	{
-		pthread_mutex_unlock(&current_philo->next->right_fork);
 		pthread_mutex_unlock(&current_philo->right_fork);
+		pthread_mutex_unlock(&current_philo->next->right_fork);
 		return ;
 	}
 	pthread_mutex_lock(&table->is_thinking);
 	if (table->dinner_end)
 	{
-		pthread_mutex_unlock(&current_philo->next->right_fork);
 		pthread_mutex_unlock(&current_philo->right_fork);
+		pthread_mutex_unlock(&current_philo->next->right_fork);
 		pthread_mutex_unlock(&table->is_thinking);
 		return ;
 	}
 	eating_utils(table, current_philo);
-	pthread_mutex_unlock(&current_philo->next->right_fork);
 	pthread_mutex_unlock(&current_philo->right_fork);
+	pthread_mutex_unlock(&current_philo->next->right_fork);
 }
 
 void	sleeping(t_table *table, t_philo *current_philo)

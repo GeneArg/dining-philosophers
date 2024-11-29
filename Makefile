@@ -1,29 +1,21 @@
 NAME		= philo
 
-PHILO_DIR	= ./srcs
-PHILO_HEAD	= ./include
-
 SRCS		= main.c actions_utils.c dinner.c eating_utils.c \
 			init.c monitor.c utils.c utils2.c
 
-OBJS		= $(patsubst %.c, $(PHILO_DIR)/%.o, $(SRCS))
+OBJS		= $(patsubst %.c, %.o, $(SRCS))
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -pthread -g #-fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -pthread -g #-pthread
 RM = rm -f
-
-# Include directory for header files
-INC 		= -I$(PHILO_HEAD)
 
 # Compilation rule for the program
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-
 # Rule to compile object files
-$(PHILO_DIR)/%.o: $(PHILO_DIR)/%.c
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
-
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all:		$(NAME)
 

@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:55:41 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/29 16:40:22 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:03:11 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 void	check_meals(t_table *table)
 {
@@ -28,16 +28,17 @@ void	check_meals(t_table *table)
 			if (philos_eaten == table->nbr_of_philo)
 			{
 				pthread_mutex_unlock(&table->meal_count_lock);
+
 				check_meals_utils(table);
 				return ;
 			}
 		}
 		pthread_mutex_unlock(&table->meal_count_lock);
+		printf("\n\033[F\033[K");
 		current_philo = current_philo->next;
 		if (current_philo == table->philo)
 			break ;
 	}
-	// pthread_mutex_unlock(&table->meal_count_lock);
 }
 
 void	check_death(t_table *table)
@@ -64,7 +65,6 @@ void	check_death(t_table *table)
 		if (current_philo == table->philo)
 			break ;
 	}
-	// pthread_mutex_unlock(&table->death);
 }
 
 void	monitor_action(t_table *table)
@@ -89,9 +89,6 @@ void	monitor_action(t_table *table)
 		}
 		pthread_mutex_unlock(&table->death);
 	}
-	// pthread_mutex_unlock(&table->meal_count_lock);
-	// pthread_mutex_unlock(&table->is_thinking);
-	// return ;
 }
 
 void	*monitor_routine(void *arg)

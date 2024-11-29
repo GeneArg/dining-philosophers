@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 10:44:15 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 02:24:59 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:05:59 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 int	ft_atoi(const char *str)
 {

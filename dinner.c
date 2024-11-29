@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 12:04:53 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/29 16:37:59 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:26:14 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 void	philo_actions(t_table *table, t_philo *current_philo)
 {
@@ -45,10 +45,10 @@ int	check_if_one(t_table *table, t_philo *current_philo)
 		usleep(current_philo->time_to_die * 1000);
 		current_philo->is_dead = true;
 		dinner_start = table->dinner_start;
+		printf("%llu %d has taken a fork\n", get_time() - dinner_start,
+			current_philo->index);
 		printf(RED "%llu %d died\n" RST, get_time() - dinner_start,
 			current_philo->index);
-		printf(RED "dinner ended at %llu\n" RST, get_time()
-			- table->dinner_start);
 		table->dinner_end = true;
 		pthread_mutex_unlock(&table->is_thinking);
 		pthread_mutex_unlock(&table->death);
@@ -60,12 +60,12 @@ int	check_if_one(t_table *table, t_philo *current_philo)
 
 void	philo_routine_utils(t_table *table)
 {
-	long long	dinner_start;
+	// long long	dinner_start;
 
 	pthread_mutex_lock(&table->is_thinking);
 	table->dinner_start = get_time();
-	dinner_start = table->dinner_start;
-	printf("dinner started at %llu\n", get_time() - dinner_start);
+	//dinner_start = table->dinner_start;
+	// printf("dinner started at %llu\n", get_time() - dinner_start);
 	pthread_mutex_unlock(&table->is_thinking);
 }
 

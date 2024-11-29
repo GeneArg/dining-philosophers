@@ -6,11 +6,11 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 07:24:39 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/27 02:24:42 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:02:57 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 int	init_mutex(t_philo *philo)
 {
