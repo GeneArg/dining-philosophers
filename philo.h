@@ -6,141 +6,91 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 02:06:37 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/26 11:20:22 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/30 13:37:11 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <errno.h>
-# include <limits.h>
-# include <pthread.h>
+// Libraries
+
+# include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
+# include <string.h>
+# include <pthread.h>
 # include <sys/time.h>
-# include <unistd.h>
 
-# define RST "\033[0m"    // reset to default color
-# define RED "\033[1;31m" // bold red
-# define GRN "\033[1;32m" // bold green
-# define YEL "\033[1;33m" // bold yellow
-# define BLU "\033[1;34m" // bold blue
-# define MAG "\033[1;35m" // bold magenta
-# define CYN "\033[1;36m" // bold cyan
-# define WHT "\033[1;37m" // bold white
+// Macros
 
-/*PHILO STATES*/
-typedef enum e_philo_status
+# define THINK		0
+# define EAT		1
+# define SLEEP		2
+# define DEAD		3
+
+# define UP			1
+# define DOWN		0
+
+# define LEFT_FORK	-42
+# define RIGHT_FORK 42
+
+# define RED_BOLD	"\033[1;31m"
+# define RESET		"\x1b[0m"
+
+// Structures
+
+typedef struct s_fork
 {
-	EATING,
-	SLEEPING,
-	THINKING,
-	TAKE_FIRST_FORK,
-	TAKE_SECOND_FORK,
-	DEAD
-}					t_philo_status;
+	pthread_mutex_t	fork_mutex;
+}	t_fork;
 
-/*CODES FOR GET TIME*/
-typedef enum e_time_code
+typedef struct s_args
 {
-	SECONDS,
-	MILLISECONDS,
-	MICROSECONDS
-}					t_time_code;
+	int				n_philo;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	int				n_loop;
+}	t_args;
 
-/*For Mutex*/
-typedef enum e_opcode
+typedef struct s_global
 {
-	LOCK,
-	UNLOCK,
-	INIT,
-	DESTROY,
-	CREATE,
-	JOIN,
-	DETACH
-}					t_opcode;
-
-typedef enum e_bool
-{
-	false = 0,
-	true = 1
-}					t_bool;
+	t_args			a;
+	bool			someone_died;
+	pthread_t		t_supervisor;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	philo_mutex;
+}	t_global;
 
 typedef struct s_philo
 {
-	int				index;
-	long long		time_to_die;
-	long long		time_to_eat;
-	long long		time_to_sleep;
-	long long		last_meal;
-	int				current_meal;
-	t_bool			first_meal;
-	t_bool			is_sleeping;
-	t_bool			is_thinking;
-	t_bool			is_eating;
-	t_bool			is_dead;
-	pthread_mutex_t	right_fork;
-	struct s_philo	*next;
-	struct s_philo	*prev;
-}					t_philo;
+	t_global		*g;
+	unsigned char	id;
+	pthread_t		t_philosopher;
+	int				loop;
+	time_t			last_meal;
+	t_fork			*right_fork;
+	t_fork			*left_fork;
+	bool			right_fork_state;
+	bool			left_fork_state;
+}	t_philo;
 
-typedef struct s_table
-{
-	int				nbr_of_philo;
-	int				philo_index;
-	int				nbr_of_meals;
-	t_bool			first_meal;
-	pthread_mutex_t	is_sleeping;
-	pthread_mutex_t	is_thinking;
-	pthread_mutex_t	meal_count_lock;
-	pthread_mutex_t	death;
-	long long		dinner_start;
-	t_bool			dinner_end;
-	t_philo			*philo;
+// Functions
 
-}					t_table;
+bool	thread_handler(t_global *g, t_philo **philos);
+void	*state_handler(char state, t_philo *philo, t_global *g);
 
-/*UTILS*/
-int					ft_check_args(int argc, char **argv);
-int					is_digit_str(char *str);
-int					is_positive_str(char *str);
-int					max_thread(char *str);
-long				ft_atol(const char *str);
-int					ft_atoi(const char *str);
-long long			get_time(void);
-void				free_all(t_table *table, pthread_t *thread);
-void				free_list(t_philo **philo);
-void				destroy_mutexes(t_table *table);
-int					ft_isdigit(int c);
+int		someone_died(t_philo *philo);
+time_t	get_timestamp(void);
+int		get_input_value(char *s);
+int		clean_exit(t_global *g, t_philo *philo, t_fork *forks);
+int		error_handler(char *msg, t_global *g, t_philo *philo, t_fork *forks);
 
-/*INIT*/
-int					init_table(t_table *table, char **argv);
-int					create_philo_list(t_philo **philo, char **argv);
-int					init_philo(t_philo *philo, char **argv, int index);
-int					init_mutex(t_philo *philo);
-
-/*MONITOR*/
-void				*monitor_routine(void *arg);
-void				monitor_action(t_table *table);
-void				check_death(t_table *table);
-void				check_meals(t_table *table);
-void				check_meals_utils(t_table *table);
-void				check_death_utils(t_table *table, t_philo *current_philo,
-						long long current_time);
-
-/*ROUTINE*/
-int					routine(t_table *table, pthread_t *thread);
-void				*philo_routine(void *arg);
-void				philo_routine_utils(t_table *table);
-int					check_if_one(t_table *table, t_philo *current_philo);
-void				philo_actions(t_table *table, t_philo *current_philo);
-void				eating_utils(t_table *table, t_philo *current_philo);
-void				check_first_meal_utils(t_table *table,
-						t_philo *current_philo, long long current_time);
-int					check_first_meal(t_table *table, t_philo *current_philo);
-void				thinking(t_table *table, t_philo *current_philo);
-void				sleeping(t_table *table, t_philo *current_philo);
-void				eating(t_table *table, t_philo *current_philo);
+bool	philo_init(t_global *g, t_philo **philos, t_fork **forks);
+bool	global_init(t_global *g, t_args a);
+bool	args_init(t_args *a, int argc, char **argv);
 
 #endif

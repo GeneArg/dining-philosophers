@@ -6,66 +6,82 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:06:59 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/29 18:03:21 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:25:28 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_time(void)
+time_t	get_timestamp(void)
 {
-	struct timeval	time;
-	long long		milliseconds;
+	struct timeval	tv;
+	static time_t	start_time = 0;
+	time_t			current_time;
 
-	gettimeofday(&time, NULL);
-	milliseconds = (long long)time.tv_sec * 1000LL + (long long)time.tv_usec
-		/ 1000;
-	return (milliseconds);
+	gettimeofday(&tv, NULL);
+	current_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	if (start_time == 0)
+		start_time = current_time;
+	return (current_time - start_time);
 }
 
-int	ft_isdigit(int c)
+int	someone_died(t_philo *philo)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
+	bool	state;
+
+	pthread_mutex_lock(&(philo->g->death_mutex));
+	state = philo->g->someone_died;
+	pthread_mutex_unlock(&(philo->g->death_mutex));
+	return (state);
 }
 
-static int	ft_check_args_utils(char **argv)
+int	get_input_value(char *s)
 {
-	int	i;
+	int	n;
 
-	i = 1;
-	while (argv[i])
+	n = -1;
+	while (*s == 32)
+		s++;
+	if (*s == 45 || (*s != 43 && (*s < 48 || *s > 57)))
+		return (n);
+	if (*s == 43)
+		s++;
+	while (*s >= 48 && *s <= 57)
 	{
-		if (!is_digit_str(argv[i]))
-		{
-			printf(RED "Error: Argument %d is not a number\n" RST, i);
-			return (0);
-		}
-		if (!is_positive_str(argv[i]))
-		{
-			printf(RED "Error: Argument %d is not a positive \
-number or over INT_MAX\n" RST, i);
-			return (0);
-		}
-		i++;
+		if (n == -1)
+			n = 0;
+		n = n * 10 + *s - 48;
+		s++;
 	}
-	if (!max_thread(argv[1]))
-	{
-		printf(RED "Error: Too many philos\n" RST);
-		return (0);
-	}
-	return (1);
+	return (n);
 }
 
-int	ft_check_args(int argc, char **argv)
+int	clean_exit(t_global *g, t_philo *philo, t_fork *forks)
 {
-	if (argc != 5 && argc != 6)
+	if (g)
 	{
-		printf(RED "Error: Wrong number of arguments\n" RST);
-		return (0);
+		if (pthread_mutex_destroy(&g->death_mutex))
+			return (EXIT_FAILURE);
+		if (pthread_mutex_destroy(&g->philo_mutex))
+			return (EXIT_FAILURE);
 	}
-	if (!ft_check_args_utils(argv))
-		return (0);
-	return (1);
+	if (philo)
+		free(philo);
+	if (forks)
+	{
+		if (pthread_mutex_destroy(&forks->fork_mutex))
+			return (EXIT_FAILURE);
+		free(forks);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	error_handler(char *msg, t_global *g, t_philo *philo, t_fork *forks)
+{
+	write(2, RED_BOLD, 7);
+	while (*msg)
+		write(2, &*msg++, 1);
+	write(2, RESET, 4);
+	clean_exit(g, philo, forks);
+	return (EXIT_FAILURE);
 }

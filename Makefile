@@ -1,7 +1,7 @@
 NAME		= philo
 
-SRCS		= main.c actions_utils.c dinner.c eating_utils.c \
-			init.c monitor.c utils.c utils2.c
+SRCS		= main.c actions_utils.c dinner.c \
+			init.c utils.c
 
 OBJS		= $(patsubst %.c, %.o, $(SRCS))
 

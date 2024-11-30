@@ -6,110 +6,67 @@
 /*   By: eagranat <eagranat@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:31:36 by eagranat          #+#    #+#             */
-/*   Updated: 2024/11/29 18:34:58 by eagranat         ###   ########.fr       */
+/*   Updated: 2024/11/30 14:02:07 by eagranat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eating(t_table *table, t_philo *current_philo)
+static void	*eat_state(t_philo *philo)
 {
-	if (!table || !current_philo)
-		return ;
-	pthread_mutex_lock(&current_philo->right_fork);
-	pthread_mutex_lock(&current_philo->next->right_fork);
-	if (!check_first_meal(table, current_philo))
-	{
-		pthread_mutex_unlock(&current_philo->right_fork);
-		pthread_mutex_unlock(&current_philo->next->right_fork);
-		return ;
-	}
-	pthread_mutex_lock(&table->is_thinking);
-	if (table->dinner_end)
-	{
-		pthread_mutex_unlock(&current_philo->right_fork);
-		pthread_mutex_unlock(&current_philo->next->right_fork);
-		pthread_mutex_unlock(&table->is_thinking);
-		return ;
-	}
-	eating_utils(table, current_philo);
-	pthread_mutex_unlock(&current_philo->right_fork);
-	pthread_mutex_unlock(&current_philo->next->right_fork);
+	pthread_mutex_lock(&(philo->g->print_mutex));
+	if (!someone_died(philo))
+		printf("%ld %d is eating\n", get_timestamp(), philo->id);
+	pthread_mutex_unlock(&(philo->g->print_mutex));
+	pthread_mutex_lock(&(philo->g->philo_mutex));
+	philo->last_meal = get_timestamp();
+	pthread_mutex_unlock(&(philo->g->philo_mutex));
+	usleep(philo->g->a.time_to_eat);
+	pthread_mutex_lock(&(philo->g->philo_mutex));
+	philo->loop++;
+	pthread_mutex_unlock(&(philo->g->philo_mutex));
+	return (NULL);
 }
 
-void	sleeping(t_table *table, t_philo *current_philo)
+static void	*sleep_state(t_philo *philo)
 {
-	long long	current_time;
-	long long	dinner_start;
-	int			index;
-
-	if (table->dinner_end)
-		return ;
-	pthread_mutex_lock(&table->is_thinking);
-	if (table->dinner_end)
-	{
-		pthread_mutex_unlock(&table->is_thinking);
-		return ;
-	}
-	current_time = get_time();
-	dinner_start = table->dinner_start;
-	index = current_philo->index;
-	printf("%llu %d is sleeping\n", current_time - dinner_start, index);
-	pthread_mutex_unlock(&table->is_thinking);
-	usleep(current_philo->time_to_sleep * 1000);
-	current_philo->is_sleeping = false;
-	current_philo->is_thinking = true;
+	pthread_mutex_lock(&(philo->g->print_mutex));
+	if (!someone_died(philo))
+		printf("%ld %d is sleeping\n", get_timestamp(), philo->id);
+	pthread_mutex_unlock(&(philo->g->print_mutex));
+	usleep(philo->g->a.time_to_sleep);
+	return (NULL);
 }
 
-void	thinking(t_table *table, t_philo *current_philo)
+static void	*think_state(t_philo *philo)
 {
-	long long	current_time;
-	long long	dinner_start;
-	int			index;
-
-	pthread_mutex_lock(&table->is_thinking);
-	if (table->dinner_end)
-	{
-		pthread_mutex_unlock(&table->is_thinking);
-		return ;
-	}
-	current_time = get_time();
-	dinner_start = table->dinner_start;
-	index = current_philo->index;
-	printf("%llu %d is thinking\n", current_time - dinner_start, index);
-	pthread_mutex_unlock(&table->is_thinking);
-	if (table->nbr_of_philo % 2 != 0)
-		usleep(current_philo->time_to_eat * 1000);
-	current_philo->is_thinking = false;
-	current_philo->is_eating = true;
+	pthread_mutex_lock(&(philo->g->print_mutex));
+	if (!someone_died(philo))
+		printf("%ld %d is thinking\n", get_timestamp(), philo->id);
+	pthread_mutex_unlock(&(philo->g->print_mutex));
+	return (NULL);
 }
 
-void	check_death_utils(t_table *table, t_philo *current_philo,
-		long long current_time)
+static void	*dead_state(t_philo *philo, t_global *g)
 {
-	int	index;
-
-	pthread_mutex_lock(&table->is_thinking);
-	if (table->dinner_end)
-	{
-		pthread_mutex_unlock(&table->is_thinking);
-		return ;
-	}
-	index = current_philo->index;
-	current_philo->is_dead = true;
-	printf(RED "%llu %d died\n" RST, current_time - table->dinner_start, index);
-	table->dinner_end = true;
-	pthread_mutex_unlock(&table->is_thinking);
+	pthread_mutex_lock(&(g->death_mutex));
+	g->someone_died = true;
+	pthread_mutex_unlock(&(g->death_mutex));
+	pthread_mutex_lock(&((*philo).g->print_mutex));
+	printf("%ld %d died\n", get_timestamp(), (*philo).id);
+	pthread_mutex_unlock(&((*philo).g->print_mutex));
+	return (NULL);
 }
 
-void	check_meals_utils(t_table *table)
+void	*state_handler(char state, t_philo *philo, t_global *g)
 {
-	pthread_mutex_lock(&table->is_thinking);
-	if (table->dinner_end)
-	{
-		pthread_mutex_unlock(&table->is_thinking);
-		return ;
-	}
-	table->dinner_end = true;
-	pthread_mutex_unlock(&table->is_thinking);
+	if (state == EAT)
+		return (eat_state(philo));
+	else if (state == SLEEP)
+		return (sleep_state(philo));
+	else if (state == THINK)
+		return (think_state(philo));
+	else if (state == DEAD)
+		return (dead_state(philo, g));
+	return (NULL);
 }
